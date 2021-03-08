@@ -1,0 +1,12 @@
+{
+    "name": "ibu/autoresponder",
+    "description": "Auto reseponder system for intro2web course",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "dinokeco",
+            "email": "dino.keco@gmail.com"
+        }
+    ],
+    "require": {}
+}
