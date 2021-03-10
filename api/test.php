@@ -11,11 +11,11 @@ $user_dao = new UserDao();
 
 $user1 = [
   "name" => "Faris Bektas",
-  "email" => "ferecare@gmail.com",
-  "password" => "1234",
+  "email" => "faris.bektas@stu.ibu.edu.ba",
+  "password" => "12345",
   "account_id" => 1
 ];
-$user = $user_dao->add_user($user1);
+$user = $user_dao->update_user(11, $user1);
 
 //$user_dao->get_user_by_email("dino.keco@gmail.com");
 
