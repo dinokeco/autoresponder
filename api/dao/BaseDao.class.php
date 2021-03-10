@@ -1,6 +1,13 @@
 <?php
 require_once dirname(__FILE__)."/../config.php";
 
+/**
+* The main class for interaction with database.
+*
+* All other DAO classes should inherit this class.
+*
+* @author Dino Keco
+*/
 class BaseDao {
   protected $connection;
 
