@@ -7,9 +7,5 @@ class EmailDao extends BaseDao{
     parent::__construct("emails");
   }
 
-  public function get_all_emails(){
-    return $this->query("SELECT * FROM emails", []);
-  }
-
 }
 ?>

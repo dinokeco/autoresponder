@@ -7,9 +7,5 @@ class CampaignDao extends BaseDao{
     parent::__construct("campaigns");
   }
 
-  public function get_all_campaings(){
-    return $this->query("SELECT * FROM campaigns", []);
-  }
-
 }
 ?>
