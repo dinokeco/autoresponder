@@ -5,15 +5,19 @@ error_reporting(E_ALL);
 
 require_once dirname(__FILE__). "/dao/UserDao.class.php";
 require_once dirname(__FILE__). "/dao/AccountDao.class.php";
+require_once dirname(__FILE__). "/dao/CampaignDao.class.php";
 
-$dao = new AccountDao();
+$dao = new CampaignDao();
 
-$dao->update(3, [
-  "name" => "Master Vision"
-
+$campaing = [
+  "name" => "Flash sale of shooes",
+  "account_id" => 1,
+  "start_date" => date("Y-m-d H:i:s")
+];
+$dao->update(1, [
+  "end_date" => "2021-04-01 00:00:00",
+  "status" => "BLOCKED"
 ]);
-
-
-$accounts = $dao->get_by_id(3);
-print_r($accounts);
+$campaing = $dao->get_all_campaings();// $dao->add($campaing);
+print_r($campaing);
 ?>
