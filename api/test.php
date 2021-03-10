@@ -8,12 +8,12 @@ require_once dirname(__FILE__). "/dao/AccountDao.class.php";
 
 $dao = new AccountDao();
 
-$dao->add_account([
-  "name" => "Green Hosting",
-  "created_at" => date("Y-m-d H:i:s")
+$dao->update(3, [
+  "name" => "Master Vision"
+
 ]);
 
 
-$accounts = $dao->get_all_accounts();
+$accounts = $dao->get_by_id(3);
 print_r($accounts);
 ?>
