@@ -10,6 +10,7 @@ require_once dirname(__FILE__). "/dao/CampaignDao.class.php";
 $dao = new AccountDao();
 
 $accounts = $dao->get_all($_GET['offset'], $_GET['limit']);
-print_r($accounts);
+//print_r($accounts);
+echo json_encode($accounts, JSON_PRETTY_PRINT);
 
 ?>

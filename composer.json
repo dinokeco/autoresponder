@@ -8,5 +8,7 @@
             "email": "dino.keco@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "mikecao/flight": "^1.3"
+    }
 }
