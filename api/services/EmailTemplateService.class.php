@@ -9,12 +9,13 @@ class EmailTemplateService extends BaseService{
     $this->dao = new EmailTemplateDao();
   }
 
-  public function get_email_templates($account_id, $offset, $limit, $search){
-    return $this->dao->get_email_templates($account_id, $offset, $limit, $search);
+  public function get_email_templates($account_id, $offset, $limit, $search, $order){
+    return $this->dao->get_email_templates($account_id, $offset, $limit, $search, $order);
   }
 
   public function add($email_template){
     try {
+      $email_template['created_at'] = date(Config::DATE_FORMAT);
       return parent::add($email_template);
     } catch (\Exception $e) {
       if (str_contains($e->getMessage(), 'email_templates.uq_email_template_name')) {
