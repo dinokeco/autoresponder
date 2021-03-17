@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 require_once dirname(__FILE__).'/../vendor/autoload.php';
 require_once dirname(__FILE__).'/services/AccountService.class.php';
 require_once dirname(__FILE__).'/services/UserService.class.php';
+require_once dirname(__FILE__).'/services/EmailTemplateService.class.php';
 
 Flight::set('flight.log_errors', TRUE);
 
@@ -25,10 +26,12 @@ Flight::map('query', function($name, $default_value = NULL){
 /* register Business Logic layer services */
 Flight::register('accountService', 'AccountService');
 Flight::register('userService', 'UserService');
+Flight::register('emailTemplateService', 'EmailTemplateService');
 
 /* include all routes */
 require_once dirname(__FILE__)."/routes/accounts.php";
 require_once dirname(__FILE__)."/routes/users.php";
+require_once dirname(__FILE__)."/routes/email_templates.php";
 
 Flight::start();
 ?>
