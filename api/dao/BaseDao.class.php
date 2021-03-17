@@ -13,6 +13,19 @@ class BaseDao {
 
   private $table;
 
+  public function beginTransaction(){
+
+    $this->connection->beginTransaction();
+  }
+
+  public function commit(){
+    $this->connection->commit();
+  }
+
+  public function rollBack(){
+    $this->connection->rollBack();
+    //$this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+  }
   public static function parse_order($order){
     switch(substr($order, 0, 1)){
       case '-': $order_direction = "ASC"; break;
@@ -31,6 +44,7 @@ class BaseDao {
     try {
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
     } catch(PDOException $e) {
       throw $e;
     }
@@ -93,7 +107,7 @@ class BaseDao {
 
   public function get_all($offset = 0, $limit = 25, $order="-id"){
     list($order_column, $order_direction) = self::parse_order($order);
-    
+
     return $this->query("SELECT *
                          FROM ".$this->table."
                          ORDER BY ${order_column} ${order_direction}
