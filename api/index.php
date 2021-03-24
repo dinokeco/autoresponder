@@ -29,6 +29,10 @@ Flight::route('GET /swagger', function(){
   echo $openapi->toJson();
 });
 
+Flight::route('GET /', function(){
+  Flight::redirect('/docs');
+});
+
 /* register Business Logic layer services */
 Flight::register('accountService', 'AccountService');
 Flight::register('userService', 'UserService');
