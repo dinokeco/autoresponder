@@ -10,7 +10,7 @@ require_once dirname(__FILE__).'/services/EmailTemplateService.class.php';
 
 Flight::set('flight.log_errors', TRUE);
 
-/* error handling for our API
+/* error handling for our API */
 Flight::map('error', function(Exception $ex){
   Flight::json(["message" => $ex->getMessage()], $ex->getCode() ? $ex->getCode() : 500);
 });
@@ -39,6 +39,7 @@ Flight::register('userService', 'UserService');
 Flight::register('emailTemplateService', 'EmailTemplateService');
 
 /* include all routes */
+require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/accounts.php";
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/email_templates.php";
