@@ -5,7 +5,8 @@
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost/autoresponder/api/", description="Development Environment" ),
  *    @OA\Server(url="https://autoresponder.biznet.ba/api/", description="Production Environment" )
- * )
+ * ),
+ * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
 
 
@@ -28,13 +29,24 @@ Flight::route('GET /accounts', function(){
 });
 
 /**
- * @OA\Get(path="/accounts/{id}", tags={"account"},
- *     @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1, description="Id of account"),
+ * @OA\Get(path="/accounts/{id}", tags={"account"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", name="id", default=1, description="Id of account"),
  *     @OA\Response(response="200", description="Fetch individual account")
  * )
  */
 Flight::route('GET /accounts/@id', function($id){
-  Flight::json(Flight::accountService()->get_by_id($id));
+  $headers = getallheaders();
+  $token = @$headers['Authentication'];
+  try {
+    $decoded = (array)\Firebase\JWT\JWT::decode($token, "JWT SECRET", ["HS256"]);
+    if ($decoded['aid'] == $id){
+      Flight::json(Flight::accountService()->get_by_id($id));
+    }else{
+      Flight::json(["message" => "That account is not for you"], 403);
+    }
+  } catch (\Exception $e) {
+    Flight::json(["message" => $e->getMessage()], 401);
+  }
 });
 
 /**
