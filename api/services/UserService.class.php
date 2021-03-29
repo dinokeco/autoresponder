@@ -5,6 +5,8 @@ require_once dirname(__FILE__).'/../dao/AccountDao.class.php';
 
 require_once dirname(__FILE__).'/../clients/SMTPClient.class.php';
 
+use \Firebase\JWT\JWT;
+
 class UserService extends BaseService{
 
   private $accountDao;
@@ -52,7 +54,9 @@ class UserService extends BaseService{
 
     if ($db_user['password'] != md5($user['password'])) throw new Exception("Invalid password", 400);
 
-    return $db_user;
+    $jwt = JWT::encode(["id" => $db_user["id"], "aid" => $db_user["account_id"], "r" => $db_user["role"]], "JWT SECRET");
+
+    return ["token" => $jwt];
   }
 
   public function register($user){
