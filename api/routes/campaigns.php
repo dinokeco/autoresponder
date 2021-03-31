@@ -20,18 +20,17 @@ Flight::route('GET /user/campaigns', function(){
 
 /**
  * @OA\Get(path="/user/campaigns/{id}", tags={"x-user", "campaigns"}, security={{"ApiKeyAuth": {}}},
- *     @OA\Parameter(type="integer", in="path", name="id", default=1, description="Id of email template"),
+ *     @OA\Parameter(type="integer", in="path", name="id", default=1, description="id of the campaign"),
  *     @OA\Response(response="200", description="Fetch individual campaign")
  * )
  */
 Flight::route('GET /user/campaigns/@id', function($id){
-  /*$template = Flight::emailTemplateService()->get_by_id($id);
-  if ($template['account_id'] != Flight::get('user')['aid']){
-    Flight::json([]);
+  $campaign = Flight::campaignService()->get_by_id($id);
+  if ($campaign['account_id'] != Flight::get('user')['aid']){
+    throw new Exception("Invalid campaign", 403);
   }else{
-    Flight::json($template);
-  }*/
-  Flight::json(Flight::emailTemplateService()->get_email_template_by_account_and_id(Flight::get('user')['aid'], $id));
+    Flight::json($campaign);
+  }
 });
 
 /**
@@ -58,17 +57,18 @@ Flight::route('POST /user/campaigns', function(){
  *   @OA\RequestBody(description="Basic campaigns info that is going to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
- *    				 @OA\Property(property="name", required="true", type="string", example="name",	description="Name of the template" ),
- *    				 @OA\Property(property="subject", required="true", type="string", example="subject",	description="Email Subject" ),
- *    				 @OA\Property(property="body", type="string", example="body",	description="Email body" )
+ *    				 @OA\Property(property="name", required="true", type="string", example="name",	description="Name of the campaign" ),
+ *    				 @OA\Property(property="status", required="true", type="string", example="ACTIVE",	description="Status [ACTIVE, PAUSED, DELETED]" ),
+ *    				 @OA\Property(property="start_date", required="true", type="string", example="2021-03-31",	description="Start date" ),
+ *    				 @OA\Property(property="end_date", type="string", example="2022-03-31",	description="End date" )
  *          )
  *       )
  *     ),
- *     @OA\Response(response="200", description="Update email template")
+ *     @OA\Response(response="200", description="Updated campaign")
  * )
  */
 Flight::route('PUT /user/campaigns/@id', function($id){
-  Flight::json(Flight::emailTemplateService()->update_email_template(Flight::get('user'), $id, Flight::request()->data->getData()));
+  Flight::json(Flight::campaignService()->update_campaign(Flight::get('user'), $id, Flight::request()->data->getData()));
 });
 
 

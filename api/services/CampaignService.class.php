@@ -29,40 +29,12 @@ class CampaignService extends BaseService{
     }
   }
 
-  public function get_email_template_by_account_and_id($account_id, $id){
-    return $this->dao->get_email_template_by_account_and_id($account_id, $id);
-  }
-
-
-
-  public function add_email_template($user, $email_template){
-    try {
-      // TODO: VALIDATION LAYER OF FIELDS
-
-      // whitelist fields
-      $data = [
-        "name" => $email_template["name"],
-        "subject" => $email_template["subject"],
-        "body" => $email_template["body"],
-        "account_id" => $user['aid'],
-        "created_at" => date(Config::DATE_FORMAT)
-      ];
-      return parent::add($data);
-    } catch (\Exception $e) {
-      if (str_contains($e->getMessage(), 'email_templates.uq_email_template_name')) {
-        throw new Exception("Email template with same name already exists", 400, $e);
-      }else{
-        throw new Exception($e->getMessage(), 400, $e);
-      }
+  public function update_campaign($user, $id, $campaign){
+    $db_campaign = $this->dao->get_by_id($id);
+    if ($db_campaign['account_id'] != $user['aid']){
+      throw new Exception("Invalid campaign", 403);
     }
-  }
-
-  public function update_email_template($user, $id, $email_template){
-    $db_template = $this->dao->get_by_id($id);
-    if ($db_template['account_id'] != $user['aid']){
-      throw new Exception("Invalid email template", 403);
-    }
-    return $this->update($id, $email_template);
+    return $this->update($id, $campaign);
   }
 }
 ?>
