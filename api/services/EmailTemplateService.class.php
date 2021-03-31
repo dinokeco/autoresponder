@@ -9,6 +9,10 @@ class EmailTemplateService extends BaseService{
     $this->dao = new EmailTemplateDao();
   }
 
+  public function get_email_template_by_account_and_id($account_id, $id){
+    return $this->dao->get_email_template_by_account_and_id($account_id, $id);
+  }
+
   public function get_email_templates($account_id, $offset, $limit, $search, $order){
     return $this->dao->get_email_templates($account_id, $offset, $limit, $search, $order);
   }

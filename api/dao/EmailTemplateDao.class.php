@@ -7,6 +7,9 @@ class EmailTemplateDao extends BaseDao{
     parent::__construct("email_templates");
   }
 
+  public function get_email_template_by_account_and_id($account_id, $id){
+    return $this->query_unique("SELECT * FROM email_templates WHERE account_id = :account_id AND id = :id", ["account_id" => $account_id, "id" => $id]);
+  }
   public function get_email_templates($account_id, $offset, $limit, $search, $order){
     list($order_column, $order_direction) = self::parse_order($order);
 
@@ -19,7 +22,7 @@ class EmailTemplateDao extends BaseDao{
       $query .= "AND ( LOWER(name) LIKE CONCAT('%', :search, '%') OR LOWER(subject) LIKE CONCAT('%', :search, '%'))";
       $params['search'] = strtolower($search);
     }
-    
+
     $query .="ORDER BY ${order_column} ${order_direction} ";
     $query .="LIMIT ${limit} OFFSET ${offset}";
 
