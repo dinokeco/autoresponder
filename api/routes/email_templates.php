@@ -52,8 +52,22 @@ Flight::route('POST /user/email_templates', function(){
   Flight::json(Flight::emailTemplateService()->add_email_template(Flight::get('user'), Flight::request()->data->getData()));
 });
 
+/**
+ * @OA\Put(path="/user/email_templates/{id}", tags={"x-user", "account"}, security={{"ApiKeyAuth": {}}},
+ *   @OA\Parameter(type="integer", in="path", name="id", default=1),
+ *   @OA\RequestBody(description="Basic emiail template info that is going to be updated", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="name", required="true", type="string", example="name",	description="Name of the template" ),
+ *    				 @OA\Property(property="subject", required="true", type="string", example="subject",	description="Email Subject" ),
+ *    				 @OA\Property(property="body", type="string", example="body",	description="Email body" )
+ *          )
+ *       )
+ *     ),
+ *     @OA\Response(response="200", description="Update email template")
+ * )
+ */
 Flight::route('PUT /user/email_templates/@id', function($id){
-  $data = Flight::request()->data->getData();
-  Flight::json(Flight::emailTemplateService()->update($id, $data));
+  Flight::json(Flight::emailTemplateService()->update_email_template(Flight::get('user'), $id, Flight::request()->data->getData()));
 });
 ?>
