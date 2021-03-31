@@ -1,6 +1,7 @@
 <?php
 /**
  * @OA\Get(path="/user/campaigns", tags={"x-user", "campaigns"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="string", in="query", name="status", default="ACTIVE", description="Status of campaign"),
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="search", description="Search string for accounts. Case insensitive search."),
@@ -10,12 +11,13 @@
  */
 Flight::route('GET /user/campaigns', function(){
   $account_id = Flight::get('user')['aid'];
+  $status = Flight::query('status', 'ACTIVE');
   $offset = Flight::query('offset', 0);
   $limit = Flight::query('limit', 25);
   $search = Flight::query('search');
   $order = Flight::query('order', '-id');
 
-  Flight::json(Flight::campaignService()->get_campaigns($account_id, $offset, $limit, $search, $order));
+  Flight::json(Flight::campaignService()->get_campaigns($account_id, $status, $offset, $limit, $search, $order));
 });
 
 /**
@@ -70,6 +72,5 @@ Flight::route('POST /user/campaigns', function(){
 Flight::route('PUT /user/campaigns/@id', function($id){
   Flight::json(Flight::campaignService()->update_campaign(Flight::get('user'), $id, Flight::request()->data->getData()));
 });
-
 
 ?>

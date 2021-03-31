@@ -7,7 +7,7 @@ class CampaignDao extends BaseDao{
     parent::__construct("campaigns");
   }
 
-  public function get_campaigns($account_id, $offset, $limit, $search, $order){
+  public function get_campaigns($account_id, $status, $offset, $limit, $search, $order){
     list($order_column, $order_direction) = self::parse_order($order);
     $params = [];
     $query = "SELECT c.*, a.name AS account_name, u.name AS user_name, u.email
@@ -19,6 +19,11 @@ class CampaignDao extends BaseDao{
     if ($account_id){
       $params["account_id"] = $account_id;
       $query .= "AND c.account_id = :account_id ";
+    }
+
+    if ($status){
+      $params["status"] = $status;
+      $query .= "AND c.status = :status ";
     }
 
     if (isset($search)){

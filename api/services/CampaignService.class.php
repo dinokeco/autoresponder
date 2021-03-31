@@ -9,8 +9,8 @@ class CampaignService extends BaseService{
     $this->dao = new CampaignDao();
   }
 
-  public function get_campaigns($account_id, $offset, $limit, $search, $order){
-    return $this->dao->get_campaigns($account_id, $offset, $limit, $search, $order);
+  public function get_campaigns($account_id, $status, $offset, $limit, $search, $order){
+    return $this->dao->get_campaigns($account_id, $status, $offset, $limit, $search, $order);
   }
 
   public function add_campaign($user, $campaign){
