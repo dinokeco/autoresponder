@@ -12,6 +12,8 @@ class Config {
   const SMTP_PORT = 587;
   const SMTP_USER = "postmaster@mail.shfy.io";
   const SMTP_PASSWORD = "";
+
+  const JWT_SECRET = "y4KvQcZVqn3F7uxQvcFk";
 }
 
 ?>
