@@ -53,7 +53,7 @@ Flight::route('POST /user/email_templates', function(){
 });
 
 /**
- * @OA\Put(path="/user/email_templates/{id}", tags={"x-user", "account"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Put(path="/user/email_templates/{id}", tags={"x-user", "email-templates"}, security={{"ApiKeyAuth": {}}},
  *   @OA\Parameter(type="integer", in="path", name="id", default=1),
  *   @OA\RequestBody(description="Basic emiail template info that is going to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
@@ -70,4 +70,54 @@ Flight::route('POST /user/email_templates', function(){
 Flight::route('PUT /user/email_templates/@id', function($id){
   Flight::json(Flight::emailTemplateService()->update_email_template(Flight::get('user'), $id, Flight::request()->data->getData()));
 });
+
+
+/**
+ * @OA\Get(path="/admin/email_templates/{id}", tags={"x-admin", "email-templates"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", name="id", default=1, description="Id of email template"),
+ *     @OA\Response(response="200", description="Fetch individual email template")
+ * )
+ */
+Flight::route('GET /admin/email_templates/@id', function($id){
+  Flight::json(Flight::emailTemplateService()->get_by_id($id));
+});
+
+/**
+ * @OA\Post(path="/admin/email_templates", tags={"x-admin", "email-templates"}, security={{"ApiKeyAuth": {}}},
+ *   @OA\RequestBody(description="Basic email template info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *             @OA\Property(property="account_id", required="true", type="integer", example=1,	description="Id of account"),
+ *    				 @OA\Property(property="name", required="true", type="string", example="name",	description="Name of the template" ),
+ *    				 @OA\Property(property="subject", required="true", type="string", example="subject",	description="Subject of the email" ),
+ *    				 @OA\Property(property="body", type="string", example="body",	description="Body of the email" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Saved email template")
+ * )
+ */
+Flight::route('POST /admin/email_templates', function(){
+  Flight::json(Flight::emailTemplateService()->add(Flight::request()->data->getData()));
+});
+
+/**
+ * @OA\Put(path="/admin/email_templates/{id}", tags={"x-admin", "email-templates"}, security={{"ApiKeyAuth": {}}},
+ *   @OA\Parameter(type="integer", in="path", name="id", default=1),
+ *   @OA\RequestBody(description="Basic emiail template info that is going to be updated", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="name", required="true", type="string", example="name",	description="Name of the template" ),
+ *    				 @OA\Property(property="subject", required="true", type="string", example="subject",	description="Email Subject" ),
+ *    				 @OA\Property(property="body", type="string", example="body",	description="Email body" )
+ *          )
+ *       )
+ *     ),
+ *     @OA\Response(response="200", description="Update email template")
+ * )
+ */
+Flight::route('PUT /admin/email_templates/@id', function($id){
+  Flight::json(Flight::emailTemplateService()->update($id, Flight::request()->data->getData()));
+});
+
 ?>
