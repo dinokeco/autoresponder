@@ -17,15 +17,24 @@ class EmailTemplateService extends BaseService{
     return $this->dao->get_email_templates($account_id, $offset, $limit, $search, $order);
   }
 
-  public function add($email_template){
+  public function add_email_template($user, $email_template){
     try {
-      $email_template['created_at'] = date(Config::DATE_FORMAT);
-      return parent::add($email_template);
+      // TODO: VALIDATION LAYER OF FIELDS
+
+      // whitelist fields
+      $data = [
+        "name" => $email_template["name"],
+        "subject" => $email_template["subject"],
+        "body" => $email_template["body"],
+        "account_id" => $user['aid'],
+        "created_at" => date(Config::DATE_FORMAT)
+      ];
+      return parent::add($data);
     } catch (\Exception $e) {
       if (str_contains($e->getMessage(), 'email_templates.uq_email_template_name')) {
         throw new Exception("Email template with same name already exists", 400, $e);
       }else{
-        throw $e;
+        throw new Exception($e->getMessage(), 400, $e);
       }
     }
   }

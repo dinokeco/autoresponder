@@ -34,9 +34,22 @@ Flight::route('GET /user/email_templates/@id', function($id){
   Flight::json(Flight::emailTemplateService()->get_email_template_by_account_and_id(Flight::get('user')['aid'], $id));
 });
 
+/**
+ * @OA\Post(path="/user/email_templates", tags={"x-user", "email-templates"}, security={{"ApiKeyAuth": {}}},
+ *   @OA\RequestBody(description="Basic email template info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="name", required="true", type="string", example="name",	description="Name of the template" ),
+ *    				 @OA\Property(property="subject", required="true", type="string", example="subject",	description="Subject of the email" ),
+ *    				 @OA\Property(property="body", type="string", example="body",	description="Body of the email" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Saved email template")
+ * )
+ */
 Flight::route('POST /user/email_templates', function(){
-  $data = Flight::request()->data->getData();
-  Flight::json(Flight::emailTemplateService()->add($data));
+  Flight::json(Flight::emailTemplateService()->add_email_template(Flight::get('user'), Flight::request()->data->getData()));
 });
 
 Flight::route('PUT /user/email_templates/@id', function($id){
