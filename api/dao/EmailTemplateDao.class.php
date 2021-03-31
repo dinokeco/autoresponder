@@ -12,11 +12,15 @@ class EmailTemplateDao extends BaseDao{
   }
   public function get_email_templates($account_id, $offset, $limit, $search, $order){
     list($order_column, $order_direction) = self::parse_order($order);
-
-    $params = ["account_id" => $account_id];
+    $params = [];
     $query = "SELECT *
               FROM email_templates
-              WHERE account_id = :account_id ";
+              WHERE 1 = 1 ";
+
+    if ($account_id){
+      $params["account_id"] = $account_id;
+      $query .= "AND account_id = :account_id ";
+    }
 
     if (isset($search)){
       $query .= "AND ( LOWER(name) LIKE CONCAT('%', :search, '%') OR LOWER(subject) LIKE CONCAT('%', :search, '%'))";
