@@ -7,6 +7,7 @@ require_once dirname(__FILE__).'/../vendor/autoload.php';
 require_once dirname(__FILE__).'/services/AccountService.class.php';
 require_once dirname(__FILE__).'/services/UserService.class.php';
 require_once dirname(__FILE__).'/services/EmailTemplateService.class.php';
+require_once dirname(__FILE__).'/services/CampaignService.class.php';
 
 Flight::set('flight.log_errors', TRUE);
 
@@ -43,15 +44,14 @@ Flight::route('GET /', function(){
 Flight::register('accountService', 'AccountService');
 Flight::register('userService', 'UserService');
 Flight::register('emailTemplateService', 'EmailTemplateService');
+Flight::register('campaignService', 'CampaignService');
 
 /* include all routes */
 require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/accounts.php";
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/email_templates.php";
-
-
-
+require_once dirname(__FILE__)."/routes/campaigns.php";
 
 Flight::start();
 ?>
