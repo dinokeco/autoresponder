@@ -18,11 +18,18 @@ class Config {
   public static function DB_PORT(){
     return Config::get_env("DB_PORT", "3306");
   }
-
-  const SMTP_HOST = "smtp.mailgun.org";
-  const SMTP_PORT = 587;
-  const SMTP_USER = "postmaster@mail.shfy.io";
-  const SMTP_PASSWORD = "";
+  public static function SMTP_HOST(){
+    return Config::get_env("SMTP_HOST", "smtp.mailgun.org");
+  }
+  public static function SMTP_PORT(){
+    return Config::get_env("SMTP_PORT", "587");
+  }
+  public static function SMTP_USER(){
+    return Config::get_env("SMTP_USER", NULL);
+  }
+  public static function SMTP_PASSWORD(){
+    return Config::get_env("SMTP_PASSWORD", NULL);
+  }
 
   const JWT_SECRET = "y4KvQcZVqn3F7uxQvcFk";
   const JWT_TOKEN_TIME = 604800;
