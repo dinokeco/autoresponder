@@ -15,6 +15,9 @@ class Config {
   public static function DB_SCHEME(){
     return Config::get_env("DB_SCHEME", "autoresponder");
   }
+  public static function DB_PORT(){
+    return Config::get_env("DB_PORT", "3306");
+  }
 
   const SMTP_HOST = "smtp.mailgun.org";
   const SMTP_PORT = 587;
