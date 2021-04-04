@@ -1,7 +1,7 @@
 <?php
 /* Swagger documentation */
 /**
- * @OA\Info(title="Autoresponder API", version="0.1")
+ * @OA\Info(title="Autoresponder API", version="0.2")
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost/autoresponder/api/", description="Development Environment" ),
  *    @OA\Server(url="https://autoresponder.biznet.ba/api/", description="Production Environment" )
