@@ -271,13 +271,6 @@
         <script type="text/javascript">
           $(document).ready(function() {
             var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
-
-            // define routes
-            app.route({view: 'dashboard', load: 'dashboard.html' });
-            app.route({view: 'tables', load: 'tables.html' });
-            app.route({view: 'notifications', load: 'notifications.html' });
-
-            // run app
             app.run();
           });
         </script>
