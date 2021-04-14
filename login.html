@@ -38,13 +38,13 @@
                             <h3 class="panel-title">Please Sign In</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="login-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                        <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
                                     <div class="form-group">
                                       <button id="login-link" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
@@ -73,19 +73,19 @@
                             <h3 class="panel-title">Register Form</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="register-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="register-account" class="form-control" placeholder="Account name" name="account" type="text" autofocus>
+                                        <input class="form-control" placeholder="Account name" name="account" type="text" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-name" class="form-control" placeholder="Your name" name="name" type="text">
+                                        <input class="form-control" placeholder="Your name" name="name" type="text">
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-email" class="form-control" placeholder="E-mail" name="email" type="text">
+                                        <input class="form-control" placeholder="E-mail" name="email" type="text">
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
                                     <div class="form-group">
                                       <button id="register-link" onclick="doRegister();" class="btn btn-lg btn-success btn-block">Register</button>
@@ -107,10 +107,10 @@
                             <h3 class="panel-title">Forgot Password</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="forgot-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="forgot-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                        <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
                                       <button id="forgot-link" onclick="doForgotPassword()" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
@@ -132,12 +132,12 @@
                             <h3 class="panel-title">Change Password</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="change-form" role="form">
                                 <fieldset>
-                                    <input id="change-password-token" name="token" type="hidden">
+                                    <input name="token" type="hidden">
 
                                     <div class="form-group">
-                                        <input id="change-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
                                     <div class="form-group">
                                       <button id="change-link" onclick="doChangePassword();" class="btn btn-lg btn-success btn-block">Change Password</button>
@@ -155,7 +155,7 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="./assets/js/bootstrap.min.js"></script>
-
+        <script src="./assets/js/utils.js"></script>
         <script type="text/javascript">
 
           $(function(){
@@ -195,15 +195,9 @@
           }
 
           function doRegister(){
-            var register_info = {
-              "account" : $("#register-account").val(),
-              "name" : $("#register-name").val(),
-              "email" : $("#register-email").val(),
-              "password" : $("#register-password").val()
-            };
 
             $("#register-link").prop('disabled',true);
-            $.post( "http://localhost/autoresponder/api/register", register_info).done(function( data ) {
+            $.post("api/register", jsonize_form("#register-form")).done(function( data ) {
               console.log(data);
               $("#register-form-container").addClass("hidden");
               $("#form-alert").removeClass("hidden")
@@ -217,12 +211,9 @@
           }
 
           function doLogin(){
-            var login_info = {
-              "email" : $("#email").val(),
-              "password" : $("#password").val()
-            };
+
             $("#login-link").prop('disabled',true);
-            $.post( "http://localhost/autoresponder/api/login", login_info).done(function( data ) {
+            $.post("api/login", jsonize_form("#login-form")).done(function( data ) {
               window.localStorage.setItem("token", data.token);
               window.location = "index.html";
             }).fail(function(error) {
@@ -232,11 +223,9 @@
           }
 
           function doForgotPassword(){
-            var forgot_info = {
-              "email" : $("#forgot-email").val()
-            };
+
             $("#forgot-link").prop('disabled',true);
-            $.post( "http://localhost/autoresponder/api/forgot", forgot_info).done(function(data) {
+            $.post("api/forgot", jsonize_form("#forgot-form")).done(function(data) {
               console.log(data);
               $("#forgot-form-container").addClass("hidden");
               $("#form-alert").removeClass("hidden")
@@ -250,13 +239,8 @@
           }
 
           function doChangePassword(){
-            var change_info = {
-              "token" : $("#change-password-token").val(),
-              "password" : $("#change-password").val(),
-            };
-
             $("#change-link").prop('disabled',true);
-            $.post( "http://localhost/autoresponder/api/reset", change_info).done(function(data) {
+            $.post("api/reset", jsonize_form("#change-form")).done(function(data) {
               window.localStorage.setItem("token", data.token);
               window.location = "index.html";
             }).fail(function(error) {
