@@ -31,7 +31,7 @@
     <body style="display:none;">
 
         <div class="container">
-            <div class="row">
+            <div id="login-form-container" class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
                         <div class="panel-heading">
@@ -46,8 +46,50 @@
                                     <div class="form-group">
                                         <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
-                                    <!-- Change this to a button or input when using this as a form -->
-                                    <button id="login-link" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
+                                    <div class="form-group">
+                                      <button id="login-link" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <a href="#" onclick="showRegisterForm()">Register here</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="register-form-alert" class="row hidden" style="margin-top: 50px;">
+              <div class="alert alert-success" role="alert">
+                This is a success alert—check it out!
+              </div>
+            </div>
+            <div id="register-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Register Form</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="register-account" class="form-control" placeholder="Account name" name="account" type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-name" class="form-control" placeholder="Your name" name="name" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-email" class="form-control" placeholder="E-mail" name="email" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    </div>
+                                    <div class="form-group">
+                                      <button id="register-link" onclick="doRegister();" class="btn btn-lg btn-success btn-block">Register</button>
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <a href="#" onclick="showLoginForm()">Back to Login</a>
+                                    </div>
                                 </fieldset>
                             </form>
                         </div>
@@ -71,6 +113,38 @@
               $('body').show();
             }
           });
+
+          function showRegisterForm(){
+            $("#login-form-container").addClass("hidden");
+            $("#register-form-container").removeClass("hidden");
+          }
+
+          function showLoginForm(){
+            $("#login-form-container").removeClass("hidden");
+            $("#register-form-container").addClass("hidden");
+          }
+
+          function doRegister(){
+            var register_info = {
+              "account" : $("#register-account").val(),
+              "name" : $("#register-name").val(),
+              "email" : $("#register-email").val(),
+              "password" : $("#register-password").val()
+            };
+
+            $("#register-link").prop('disabled',true);
+            $.post( "http://localhost/autoresponder/api/register", register_info).done(function( data ) {
+              console.log(data);
+              $("#register-form-container").addClass("hidden");
+              $("#register-form-alert").removeClass("hidden")
+              $("#register-form-alert .alert").html(data.message);
+            }).fail(function(error) {
+              $("#register-link").prop('disabled',false);
+              console.log(error);
+              alert( error.responseJSON.message );
+            });
+
+          }
 
           function doLogin(){
             var login_info = {
