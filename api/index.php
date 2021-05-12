@@ -11,7 +11,7 @@ require_once dirname(__FILE__).'/services/CampaignService.class.php';
 
 Flight::set('flight.log_errors', TRUE);
 
-/* error handling for our API */
+/* error handling for our API
 Flight::map('error', function(Exception $ex){
   Flight::json(["message" => $ex->getMessage()], $ex->getCode() ? $ex->getCode() : 500);
 });
@@ -21,7 +21,7 @@ Flight::map('query', function($name, $default_value = NULL){
   $request = Flight::request();
   $query_param = @$request->query->getData()[$name];
   $query_param = $query_param ? $query_param : $default_value;
-  return $query_param;
+  return urldecode($query_param);
 });
 
 /* utility function for getting header parameters */

@@ -105,6 +105,33 @@
   }
   function getEmailTemplates(){
 
+    $("#email-templates-table").DataTable({
+      "processing": true,
+      "serverSide": true,
+      "ajax": {
+        url: "api/user/email_templates",
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        dataSrc: "",
+        data: function ( d ) {
+          d.offset=d.start;
+          d.limit=d.length;
+          d.search = d.search.value;
+          d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+          console.log(d);
+        }
+      },
+      columns: [
+            { "data": "id" },
+            { "data": "name" },
+            { "data": "subject" },
+            { "data": "created_at" }
+        ]
+    });
+
+
+
+/*
     $.ajax({
          url: "api/user/email_templates?order="+encodeURIComponent("+id"),
          type: "GET",
@@ -124,5 +151,6 @@
            $("#email-templates-table").DataTable();
          }
       });
+      */
   }
 </script>
