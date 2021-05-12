@@ -42,6 +42,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form role="form" id="add-email-template">
+            <input type="hidden" name="id" />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Add Email Template</h4>
@@ -77,19 +78,47 @@
   $("#add-email-template").validate({
     submitHandler: function(form, event) {
       event.preventDefault();
+      var data = jsonize_form($(form));
 
-      console.log(jsonize_form($(form)));
-      addEmailTemplate(jsonize_form($(form)));
+      console.log(data);
+      if (data.id){
+        updateEmailTemplate(data);
+      }else{
+        addEmailTemplate(data);
+      }
     }
   });
 
   getEmailTemplates();
 
+  function updateEmailTemplate(email_template){
+    console.log(email_template);
+    $.ajax({
+         url: "api/user/email_templates/"+email_template.id,
+         type: "PUT",
+         data: JSON.stringify(email_template),
+         contentType: "application/json",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           toastr.success("Email Template has been updated");
+           getEmailTemplates();
+           $("#add-email-template").trigger("reset");
+           $("#add-email-template *[name='id']").val("");
+           $('#add-email-template-modal').modal("hide");
+           console.log(data);
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+           console.log(jqXHR);
+         }
+      });
+  }
   function addEmailTemplate(email_template){
     $.ajax({
          url: "api/user/email_templates",
          type: "POST",
-         data: email_template,
+         data: JSON.stringify(email_template),
+         contentType: "application/json",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
            toastr.success("Email Template has been created");
@@ -99,6 +128,7 @@
            console.log(data);
          },
          error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
            console.log(jqXHR);
          }
       });
@@ -106,51 +136,63 @@
   function getEmailTemplates(){
 
     $("#email-templates-table").DataTable({
-      "processing": true,
-      "serverSide": true,
-      "ajax": {
+      processing: true,
+      serverSide: true,
+      bDestroy: true,
+    //  pagingType: "simple",
+      ajax: {
         url: "api/user/email_templates",
         type: "GET",
-        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-        dataSrc: "",
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authentication', localStorage.getItem("token"));
+        },
+        dataSrc: function(resp){
+          console.log(resp);
+          return resp;
+        },
         data: function ( d ) {
           d.offset=d.start;
           d.limit=d.length;
           d.search = d.search.value;
           d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+
+          delete d.start;
+          delete d.length;
+          delete d.columns;
+          delete d.draw;
           console.log(d);
         }
       },
       columns: [
-            { "data": "id" },
+            { "data": "id",
+              "render": function ( data, type, row, meta ) {
+                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditEmailTemplateModal('+data+')"><i class="fa fa-edit"></i></a>';
+              }
+            },
             { "data": "name" },
             { "data": "subject" },
             { "data": "created_at" }
-        ]
+        ],
+
     });
+  }
 
-
-
-/*
+  function openEditEmailTemplateModal(id){
     $.ajax({
-         url: "api/user/email_templates?order="+encodeURIComponent("+id"),
+         url: "api/user/email_templates/"+id,
          type: "GET",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
+           $("#add-email-template *[name='id']").val(data.id);
+           $("#add-email-template *[name='name']").val(data.name);
+           $("#add-email-template *[name='subject']").val(data.subject);
+           $("#add-email-template *[name='body']").val(data.body);
+           $("#add-email-template-modal").modal("show");
            console.log(data);
-           var html = "";
-           for(var i = 0; i < data.length; i++){
-             html += '<tr class="odd">'
-                 +'<td>'+data[i].id+'</td>'
-                 +'<td>'+data[i].name+'</td>'
-                 +'<td>'+data[i].subject+'</td>'
-                 +'<td class="center">'+data[i].created_at+'</td></tr>';
-           }
-
-           $("#email-templates-table tbody").html(html);
-           $("#email-templates-table").DataTable();
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           console.log(jqXHR);
          }
       });
-      */
   }
 </script>

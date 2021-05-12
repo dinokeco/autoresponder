@@ -68,7 +68,7 @@ Flight::route('POST /user/email_templates', function(){
  * )
  */
 Flight::route('PUT /user/email_templates/@id', function($id){
-  Flight::json(Flight::emailTemplateService()->update_email_template(Flight::get('user'), $id, Flight::request()->data->getData()));
+  Flight::json(Flight::emailTemplateService()->update_email_template(Flight::get('user'), intval($id), Flight::request()->data->getData()));
 });
 
 /**
