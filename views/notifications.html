@@ -9,6 +9,19 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-6">
+              <img id="upload-img" src="" alt="wait for upload"/>
+              <form id="file-upload-form" role="form">
+                <div class="form-group">
+                    <label>File input</label>
+                    <input name="file" type="file" onchange="file2base64(this)" multiple>
+                </div>
+                <button type="submit" class="btn btn-default">Upload</button>
+              </form>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Alert Styles
@@ -145,3 +158,45 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
+
+
+<script type="text/javascript">
+
+
+  function file2base64(event){
+    console.log(event.files);
+
+    var f = event.files[0];
+
+    var reader = new FileReader();
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+        return function(e) {
+            // Render thumbnail.
+            //$('#upload-img').attr('src',e.target.result);
+            var upload = {
+              name: f.name,
+              content: e.target.result.split(',')[1]
+            };
+            $.ajax({
+                 url: "api/admin/cdn",
+                 type: "POST",
+                 data: JSON.stringify(upload),
+                 contentType: "application/json",
+                 beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+                 success: function(data) {
+                   console.log(data);
+                   $('#upload-img').attr('src',data.url);
+                 },
+                 error: function(jqXHR, textStatus, errorThrown ){
+                   toastr.error(jqXHR.responseJSON.message);
+                   console.log(jqXHR);
+                 }
+              });
+        };
+    })(f);
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(f);
+
+  }
+</script>
