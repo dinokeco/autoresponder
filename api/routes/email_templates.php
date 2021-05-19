@@ -15,6 +15,8 @@ Flight::route('GET /user/email_templates', function(){
   $search = Flight::query('search');
   $order = Flight::query('order', '-id');
 
+  $total = Flight::emailTemplateService()->get_email_templates($account_id, $offset, $limit, $search, $order, TRUE);
+  header('total-records: ' . $total['total']);
   Flight::json(Flight::emailTemplateService()->get_email_templates($account_id, $offset, $limit, $search, $order));
 });
 
