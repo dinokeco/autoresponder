@@ -139,7 +139,25 @@
       processing: true,
       serverSide: true,
       bDestroy: true,
-    //  pagingType: "simple",
+      pagingType: "simple",
+      preDrawCallback: function( settings ) {
+        if (settings.aoData.length < settings._iDisplayLength){
+          //disable pagination
+          settings._iRecordsTotal=0;
+          settings._iRecordsDisplay=0;
+        }else{
+          //enable pagination
+          settings._iRecordsTotal=100000000;
+          settings._iRecordsDisplay=1000000000;
+        }
+      },
+      language: {
+            "lengthMenu": "Display _MENU_ records per page",
+            "zeroRecords": "Nothing found - sorry",
+            "info": "Showing page _PAGE_",
+            "infoEmpty": "No records available",
+            "infoFiltered": ""
+        },
       ajax: {
         url: "api/user/email_templates",
         type: "GET",
