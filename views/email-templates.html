@@ -9,14 +9,14 @@
         <!-- /.row -->
 
         <div class="row">
-          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-email-template-modal">
+          <button style="margin-left: 5px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#add-email-template-modal">
               + Add
           </button>
         </div>
 
         <div class="row" style="margin-top: 10px;">
             <div class="table-responsive">
-                <table id="email-templates-table" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table id="email-templates-table" class="table responsive table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -139,13 +139,13 @@
       processing: true,
       serverSide: true,
       bDestroy: true,
-      //pagingType: "simple",
+      pagingType: "simple",
       preDrawCallback: function( settings ) {
-        if ( settings.jqXHR){
-        settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
-        settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
-      }
-      /*  if (settings.aoData.length < settings._iDisplayLength){
+        /*if ( settings.jqXHR){
+          settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
+          settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
+        }*/
+        if (settings.aoData.length < settings._iDisplayLength){
           //disable pagination
           settings._iRecordsTotal=0;
           settings._iRecordsDisplay=0;
@@ -153,15 +153,16 @@
           //enable pagination
           settings._iRecordsTotal=100000000;
           settings._iRecordsDisplay=1000000000;
-        } */
+        }
       },
-      /*language: {
-            "lengthMenu": "Display _MENU_ records per page",
+
+      responsive: true,
+      language: {
             "zeroRecords": "Nothing found - sorry",
             "info": "Showing page _PAGE_",
             "infoEmpty": "No records available",
             "infoFiltered": ""
-        }, */
+      },
       ajax: {
         url: "api/user/email_templates",
         type: "GET",
@@ -188,14 +189,13 @@
       columns: [
             { "data": "id",
               "render": function ( data, type, row, meta ) {
-                return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditEmailTemplateModal('+data+')"><i class="fa fa-edit"></i></a>';
+                return '<div style="min-width: 60px;"> <span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditEmailTemplateModal('+data+')"><i class="fa fa-edit"></i></a> </div>';
               }
             },
             { "data": "name" },
             { "data": "subject" },
             { "data": "created_at" }
-        ],
-
+        ]
     });
   }
 
