@@ -134,7 +134,7 @@
       });
   }
   function getEmailTemplates(){
-
+    console.log("start");
     $("#email-templates-table").DataTable({
       processing: true,
       serverSide: true,
@@ -170,6 +170,7 @@
           xhr.setRequestHeader('Authentication', localStorage.getItem("token"));
         },
         dataSrc: function(resp){
+          console.log("middle")
           console.log(resp);
           return resp;
         },
@@ -197,6 +198,7 @@
             { "data": "created_at" }
         ]
     });
+    console.log("end");
   }
 
   function openEditEmailTemplateModal(id){
