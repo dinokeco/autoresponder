@@ -151,9 +151,9 @@
 
         <script src="./assets/js/utils.js"></script>
         <script src="./assets/js/restClient.js"></script>
+        <script src="./assets/js/controllers/emailsTemplates.js"></script>
 
         <script src="//cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-
         <script src="./assets/js/dataTables/jquery.dataTables.min.js"></script>
         <script src="./assets/js/dataTables/dataTables.bootstrap.min.js"></script>
         <script src="//cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
@@ -161,6 +161,8 @@
         <script type="text/javascript">
           $(document).ready(function() {
             var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
+            app.route({view : "email-templates", load : "email-templates.html", onReady: function() { EmailTemplate.init() }});
+
             app.run();
 
             if (!window.localStorage.getItem("token")){
@@ -171,11 +173,6 @@
                 $(".admin-stuff").remove();
               }
               $('body').show();
-
-              /*if (user_info.r == "ADMIN"){
-                $("#side-menu").append('<li class="admin-stuff"> <a href="admin.html"><i class="fa fa-users fa-fw"></i> Admin Panel</a></li>');
-                $("#dropdown-menu").append('<li class="admin-stuff"> <a href="admin.html"><i class="fa fa-users fa-fw"></i> Admin Panel</a></li>');
-              }*/
             }
           });
 
