@@ -1,5 +1,5 @@
 class AUtils{
-  
+
   static form2json(selector) {
     var data = $(selector).serializeArray();
     var form_data = {};
@@ -10,7 +10,7 @@ class AUtils{
   }
 
   static json2form(selector, data){
-    for (attr in data){
+    for (const attr in data){
       $(selector+" *[name='"+attr+"']").val(data[attr]);
     }
   }
