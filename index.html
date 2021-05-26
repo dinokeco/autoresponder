@@ -66,13 +66,20 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="fa fa-user fa-fw"></i> <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <ul id="dropdown-menu" class="dropdown-menu dropdown-user">
+                            <li>
+                              <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
                             </li>
-                            <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                            <li>
+                              <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                             </li>
+                            <li class="admin-stuff">
+                              <a href="admin.html"><i class="fa fa-users fa-fw"></i> Admin Panel</a>
+                            </li>
+
                             <li class="divider"></li>
-                            <li><a href="#" onclick="doLogout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <li>
+                              <a href="#" onclick="doLogout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                             </li>
                         </ul>
                     </li>
@@ -97,6 +104,11 @@
                             </li>
                             <li>
                                 <a href="#settings"><i class="fa fa-cog fa-fw"></i> Settings</a>
+                            </li>
+                            <li class="divider"></li>
+                            
+                            <li class="admin-stuff">
+                              <a href="admin.html"><i class="fa fa-users fa-fw"></i> Admin Panel</a>
                             </li>
                         </ul>
                     </div>
@@ -153,7 +165,16 @@
             if (!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
+              var user_info = parse_jwt(window.localStorage.getItem("token"));
+              if (user_info.r != "ADMIN"){
+                $(".admin-stuff").remove();
+              }
               $('body').show();
+
+              /*if (user_info.r == "ADMIN"){
+                $("#side-menu").append('<li class="admin-stuff"> <a href="admin.html"><i class="fa fa-users fa-fw"></i> Admin Panel</a></li>');
+                $("#dropdown-menu").append('<li class="admin-stuff"> <a href="admin.html"><i class="fa fa-users fa-fw"></i> Admin Panel</a></li>');
+              }*/
             }
           });
 
