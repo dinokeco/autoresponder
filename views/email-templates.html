@@ -78,7 +78,7 @@
   $("#add-email-template").validate({
     submitHandler: function(form, event) {
       event.preventDefault();
-      var data = jsonize_form($(form));
+      var data = AUtils.form2json($(form));
 
       console.log(data);
       if (data.id){
@@ -207,10 +207,7 @@
          type: "GET",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
-           $("#add-email-template *[name='id']").val(data.id);
-           $("#add-email-template *[name='name']").val(data.name);
-           $("#add-email-template *[name='subject']").val(data.subject);
-           $("#add-email-template *[name='body']").val(data.body);
+           Autils.json2form("#add-email-template", data);
            $("#add-email-template-modal").modal("show");
            console.log(data);
          },

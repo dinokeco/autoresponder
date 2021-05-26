@@ -127,7 +127,7 @@
             if (!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else{
-              var user_info = parse_jwt(window.localStorage.getItem("token"));
+              var user_info = AUtils.parse_jwt(window.localStorage.getItem("token"));
               if (user_info.r != "ADMIN"){
                 window.location = "index.html";
               }else{
