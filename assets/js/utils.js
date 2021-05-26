@@ -26,4 +26,14 @@ class AUtils{
       }).join(''));
       return JSON.parse(jsonPayload);
   }
+
+  static role_based_elements(){
+    var user_info = AUtils.parse_jwt(window.localStorage.getItem("token"));
+    if (user_info.r == "USER_READ_ONLY"){
+      $(".user-stuff").remove();
+    }
+    if (user_info.r != "ADMIN"){
+      $(".admin-stuff").remove();
+    }
+  }
 }

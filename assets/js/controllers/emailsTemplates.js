@@ -12,6 +12,7 @@ class EmailTemplate{
         }
       }
     });
+    AUtils.role_based_elements();
     EmailTemplate.get_all();
   }
 
@@ -32,7 +33,6 @@ class EmailTemplate{
           settings._iRecordsDisplay=1000000000;
         }
       },
-
       responsive: true,
       language: {
             "zeroRecords": "Nothing found - sorry",
@@ -45,6 +45,9 @@ class EmailTemplate{
         type: "GET",
         beforeSend: function(xhr){
           xhr.setRequestHeader('Authentication', localStorage.getItem("token"));
+        },
+        dataSrc: function(resp){
+          return resp;
         },
         data: function ( d ) {
           d.offset=d.start;
