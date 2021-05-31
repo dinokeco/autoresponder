@@ -34,5 +34,13 @@ class CDNClient {
     ]);
     return $response->get("ObjectURL");
   }
+
+  public function delete($filename){
+    $result = $this->client->deleteObject([
+        'Bucket' => Config::CDN_SPACE(),
+        'Key'    => $filename
+    ]);
+    return $result;
+  }
 }
 ?>
