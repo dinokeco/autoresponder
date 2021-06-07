@@ -14,6 +14,19 @@ class EmailTemplate{
     });
     AUtils.role_based_elements();
     EmailTemplate.get_all();
+    EmailTemplate.chart();
+  }
+
+  static chart(){
+    RestClient.get("api/user/email_templates_chart", function(chart_data){
+      new Morris.Line({
+        element: 'email-chart-container',
+        data: chart_data,
+        xkey: 'year',
+        ykeys: ['value'],
+        labels: ['Value']
+      });
+    });
   }
 
   static get_all(){

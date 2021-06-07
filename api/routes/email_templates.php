@@ -1,4 +1,26 @@
 <?php
+
+/**
+ * @OA\Get(path="/user/email_templates_chart", tags={"x-user", "email-templates"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="string", in="query", name="search", description="Search string for accounts. Case insensitive search."),
+ *     @OA\Response(response="200", description="Get email template chart data")
+ * )
+ */
+Flight::route('GET /user/email_templates_chart', function(){
+  $account_id = Flight::get('user')['aid'];
+  $search = Flight::query('search');
+
+  $data = [
+    [ 'year' => '2008', 'value' => 20 ],
+    [ 'year' => '2009', 'value' => 10 ],
+    [ 'year' => '2010', 'value' => 50 ],
+    [ 'year' => '2011', 'value' => 5 ],
+    [ 'year' => '2012', 'value'=> 20 ]
+  ];
+
+  Flight::json($data);
+});
+
 /**
  * @OA\Get(path="/user/email_templates", tags={"x-user", "email-templates"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
